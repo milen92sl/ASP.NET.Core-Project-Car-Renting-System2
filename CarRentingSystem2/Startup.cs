@@ -13,14 +13,14 @@ namespace CarRentingSystem2
     public class Startup
     {
         public Startup(IConfiguration configuration)
-            => Configuration = configuration;
+            => this.Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CarRenting2DbContext>(options => options
-            .UseSqlServer(Configuration
+            .UseSqlServer(this.Configuration
             .GetConnectionString("DefaultConnection")));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
