@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
     using static Data.DataConstants;
 
     public class AddCarFormModel
