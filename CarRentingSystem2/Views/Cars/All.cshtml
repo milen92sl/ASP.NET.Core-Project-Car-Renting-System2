@@ -66,7 +66,7 @@
         <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
            asp-controller="Cars"
            asp-action="All"
-           asp-route-currentPage="@previousPage"
+           asp-route-currentPage="@(previousPage+1)"
            asp-route-brand="@Model.Brand"
            asp-route-searchTerm="@Model.SearchTerm"
            asp-route-Sorting="@((int)Model.Sorting)">Next Page</a>

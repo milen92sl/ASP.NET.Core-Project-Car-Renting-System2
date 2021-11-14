@@ -5,7 +5,7 @@
 
     public class AllCarsQueryModel
     {
-        public const int CarsPerPage = 4;
+        public const int CarsPerPage = 6;
 
         public string Brand { get; set; }
 
