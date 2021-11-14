@@ -2,7 +2,7 @@
 
 
 @{
-    ViewData["Title"] = "All Cars";
+    ViewBag.Title = "All Cars";
 }
 
 <form method="get">
@@ -38,9 +38,8 @@
         </div>
     </div>
 
-    
-</form>
 
+</form>
 
 @{
     var previousPage = Model.CurrentPage - 1;
@@ -60,20 +59,31 @@
            asp-route-currentPage="@previousPage"
            asp-route-brand="@Model.Brand"
            asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-Sorting="@((int)Model.Sorting)">Previous Page</a>
+           asp-route-sorting="@((int)Model.Sorting)">Previous Page</a>
     </div>
+
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+                                     !Model.Cars.Any();
+    }
+
     <div class="col-md-6">
-        <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
-           asp-controller="Cars"
-           asp-action="All"
-           asp-route-currentPage="@(previousPage+1)"
-           asp-route-brand="@Model.Brand"
-           asp-route-searchTerm="@Model.SearchTerm"
-           asp-route-Sorting="@((int)Model.Sorting)">Next Page</a>
+    <a class="btn btn-primary float-sm-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)" style="margin-top: 10px"
+       asp-controller="Cars"
+       asp-action="All"
+       asp-route-currentPage="@(Model.CurrentPage + 1)"
+       asp-route-brand="@Model.Brand"
+       asp-route-searchTerm="@Model.SearchTerm"
+       asp-route-sorting="@((int)Model.Sorting)">Next Page</a>
     </div>
 </div>
 
-<div class ="row">
+@if (!Model.Cars.Any())
+{
+    <h1 class="text-center">No cars found.</h1>
+}
+
+<div class="row">
     @foreach (var car in Model.Cars)
     {
         <div class="col-md-4">

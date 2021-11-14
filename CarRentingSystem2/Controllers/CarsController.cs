@@ -2,7 +2,9 @@
 {
     using CarRentingSystem2.Data;
     using CarRentingSystem2.Data.Models;
+    using CarRentingSystem2.Infrastructure;
     using CarRentingSystem2.Models.Cars;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using System.Collections.Generic;
     using System.Linq;
@@ -16,12 +18,66 @@
             this.data = data;
         }
 
-        public IActionResult Add() => View(new AddCarFormModel
+        [Authorize]
+        public IActionResult Add()
         {
-            Categories = this.GetCarCategories()
-        });
+            if (!this.UserIsDealer())
+            {
+                return RedirectToAction(nameof(DealersController.Become), "Dealers");
+            }
 
-        public IActionResult All([FromQuery]AllCarsQueryModel query)
+            return View(new AddCarFormModel
+            {
+                Categories = this.GetCarCategories()
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Add(AddCarFormModel car)
+        {
+            var dealerId = this.data
+                .Dealers
+                .Where(d=>d.UserId == this.User.GetId())
+                .Select(d=>d.Id)
+                .FirstOrDefault();
+
+            if (dealerId == 0)
+            {               
+                return RedirectToAction(nameof(DealersController.Become), "Dealers");
+            }
+
+            if (!this.data.Categories.Any(c => c.Id == car.CategoryId))
+            {
+                this.ModelState.AddModelError(nameof(car.CategoryId), "Category does not exist!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                car.Categories = this.GetCarCategories();
+
+                return View(car);
+            }
+
+            var carData = new Car
+            {
+                Brand = car.Brand,
+                Model = car.Model,
+                Description = car.Description,
+                ImageUrl = car.ImageUrl,
+                Year = car.Year,
+                CategoryId = car.CategoryId,
+                DealerId = dealerId
+               
+            };
+
+            this.data.Cars.Add(carData);
+            this.data.SaveChanges();
+
+            return RedirectToAction(nameof(All));
+        }
+
+        public IActionResult All([FromQuery] AllCarsQueryModel query)
         {
             var carsQuery = this.data.Cars.AsQueryable();
 
@@ -41,13 +97,13 @@
             {
                 CarSorting.Year => carsQuery.OrderByDescending(c => c.Year),
                 CarSorting.BrandAndModel => carsQuery.OrderBy(c => c.Brand).ThenBy(c => c.Model),
-                CarSorting.DateCreated or _ => carsQuery.OrderByDescending(c=>c.Id),
+                CarSorting.DateCreated or _ => carsQuery.OrderByDescending(c => c.Id),
             };
 
             var totalCars = carsQuery.Count();
 
             var cars = carsQuery
-                .Skip((query.CurrentPage - 1)* AllCarsQueryModel.CarsPerPage)
+                .Skip((query.CurrentPage - 1) * AllCarsQueryModel.CarsPerPage)
                 .Take(AllCarsQueryModel.CarsPerPage)
                 .Select(c => new CarListingViewModel
                 {
@@ -75,37 +131,11 @@
             return View(query);
         }
 
+        private bool UserIsDealer()
+            => this.data
+                .Dealers
+                .Any(d => d.UserId == User.GetId());
 
-        [HttpPost]
-        public IActionResult Add(AddCarFormModel car)
-        {
-            if (!this.data.Categories.Any(c => c.Id == car.CategoryId))
-            {
-                this.ModelState.AddModelError(nameof(car.CategoryId), "Category does not exist!");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                car.Categories = this.GetCarCategories();
-
-                return View(car);
-            }
-
-            var carData = new Car
-            {
-                Brand = car.Brand,
-                Model = car.Model,
-                Description = car.Description,
-                ImageUrl = car.ImageUrl,
-                Year = car.Year,
-                CategoryId = car.CategoryId
-            };
-
-            this.data.Cars.Add(carData);
-            this.data.SaveChanges();
-
-            return RedirectToAction(nameof(All));
-        }
 
         private IEnumerable<CarCategoryViewModel> GetCarCategories()
         => this.data
