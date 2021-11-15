@@ -2,9 +2,12 @@ namespace CarRentingSystem2
 {
     using CarRentingSystem2.Data;
     using CarRentingSystem2.Infrastructure;
+    using CarRentingSystem2.Services.Cars;
+    using CarRentingSystem2.Services.Statistics;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +37,16 @@ namespace CarRentingSystem2
             })
               .AddEntityFrameworkStores<CarRenting2DbContext>();
 
+            services.Configure<ApiBehaviorOptions>(option=>
+            {
+                option.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddControllersWithViews();
+
+            services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<ICarService, CarService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

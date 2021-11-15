@@ -1,5 +1,6 @@
 ﻿namespace CarRentingSystem2.Models.Cars
 {
+    using CarRentingSystem2.Services.Cars;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
@@ -8,8 +9,6 @@
         public const int CarsPerPage = 6;
 
         public string Brand { get; set; }
-
-        public IEnumerable<string> Brands { get; set; }
 
         [Display(Name = "Search by text:")]
         public string SearchTerm { get; init; }
@@ -20,6 +19,8 @@
 
         public int TotalCars { get; set; }
 
-        public IEnumerable<CarListingViewModel> Cars { get; set; }
+        public IEnumerable<string> Brands { get; set; }
+
+        public IEnumerable<CarServiceModel> Cars { get; set; }
     }
 }
