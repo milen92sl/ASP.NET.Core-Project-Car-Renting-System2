@@ -37,6 +37,7 @@
 
         [HttpPost]
         [Authorize]
+        
         public IActionResult Add(AddCarFormModel car)
         {
             var dealerId = this.data
@@ -79,7 +80,7 @@
 
             return RedirectToAction(nameof(All));
         }
-
+        
         public IActionResult All([FromQuery] AllCarsQueryModel query)
         {
             var queryResult = this.cars.All(

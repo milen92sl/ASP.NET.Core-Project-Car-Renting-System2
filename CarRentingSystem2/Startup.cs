@@ -37,12 +37,15 @@ namespace CarRentingSystem2
             })
               .AddEntityFrameworkStores<CarRenting2DbContext>();
 
-            services.Configure<ApiBehaviorOptions>(option=>
+            services.Configure<ApiBehaviorOptions>(option =>
             {
                 option.SuppressModelStateInvalidFilter = true;
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<ICarService, CarService>();
@@ -77,7 +80,7 @@ namespace CarRentingSystem2
                      endpoints.MapRazorPages();
                  });
 
-        
+
         }
     }
 }
