@@ -68,13 +68,13 @@
     }
 
     <div class="col-md-6">
-    <a class="btn btn-primary float-sm-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)" style="margin-top: 10px"
-       asp-controller="Cars"
-       asp-action="All"
-       asp-route-currentPage="@(Model.CurrentPage + 1)"
-       asp-route-brand="@Model.Brand"
-       asp-route-searchTerm="@Model.SearchTerm"
-       asp-route-sorting="@((int)Model.Sorting)">Next Page</a>
+        <a class="btn btn-primary float-sm-right @(shouldButtonBeDisabled ? "disabled" : string.Empty)" style="margin-top: 10px"
+           asp-controller="Cars"
+           asp-action="All"
+           asp-route-currentPage="@(Model.CurrentPage + 1)"
+           asp-route-brand="@Model.Brand"
+           asp-route-searchTerm="@Model.SearchTerm"
+           asp-route-sorting="@((int)Model.Sorting)">Next Page</a>
     </div>
 </div>
 
@@ -83,18 +83,4 @@
     <h1 class="text-center">No cars found.</h1>
 }
 
-<div class="row">
-    @foreach (var car in Model.Cars)
-    {
-        <div class="col-md-4">
-            <div class="card mb-3">
-                <img class="card-img-top" src="@car.ImageUrl" alt="@car.Brand @car.Model - @car.Year (@car.Category)" />
-                <div class="card-body text-center">
-                    <h5 class="card-title text-center">@car.Brand @car.Model @car.Year (@car.Category)</h5>
-                    <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" class="btn-outline-primary">Click to view</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
-
+<partial name="_CarsPartial" model="@Model.Cars" />

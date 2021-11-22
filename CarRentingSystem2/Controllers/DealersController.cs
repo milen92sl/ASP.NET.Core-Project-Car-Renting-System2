@@ -22,11 +22,11 @@
         [Authorize]
         public IActionResult Become(BecomeDealerFormModel dealer)
         {
-            var userId = this.User.GetId();
+            var userId = this.User.Id();
 
             var userIsAlreadyADealer = this.data
                 .Dealers
-                .Any(d=>d.UserId == this.User.GetId());
+                .Any(d=>d.UserId == this.User.Id());
 
             if (userIsAlreadyADealer)
             {

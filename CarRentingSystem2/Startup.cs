@@ -3,6 +3,7 @@ namespace CarRentingSystem2
     using CarRentingSystem2.Data;
     using CarRentingSystem2.Infrastructure;
     using CarRentingSystem2.Services.Cars;
+    using CarRentingSystem2.Services.Dealers;
     using CarRentingSystem2.Services.Statistics;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -46,9 +47,10 @@ namespace CarRentingSystem2
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
-
-            services.AddTransient<IStatisticsService, StatisticsService>();
+            
             services.AddTransient<ICarService, CarService>();
+            services.AddTransient<IDealerService, DealerService>();
+            services.AddTransient<IStatisticsService, StatisticsService>();
 
         }
 
