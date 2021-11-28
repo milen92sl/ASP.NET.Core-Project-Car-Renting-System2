@@ -1,20 +1,25 @@
 ﻿namespace CarRentingSystem2.Controllers
 {
     using CarRentingSystem2.Data;
+    using CarRentingSystem2.Data.Models;
     using CarRentingSystem2.Infrastructure;
     using CarRentingSystem2.Models.Cars;
     using CarRentingSystem2.Services.Cars;
     using CarRentingSystem2.Services.Dealers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class CarsController : Controller
     {
         private readonly ICarService cars;
         private readonly IDealerService dealers;
+        private readonly CarRenting2DbContext data;
 
         public CarsController(CarRenting2DbContext data, ICarService cars, IDealerService dealers)
         {
+            this.data = data;
             this.cars = cars;
             this.dealers = dealers;
         }
@@ -43,13 +48,13 @@
 
 
         [HttpPost]
-        [Authorize]       
+        [Authorize]
         public IActionResult Add(CarFormModel car)
         {
             var dealerId = this.dealers.IdByUser(this.User.Id());
 
             if (dealerId == 0)
-            {               
+            {
                 return RedirectToAction(nameof(DealersController.Become), "Dealers");
             }
 
@@ -76,7 +81,7 @@
 
             return RedirectToAction(nameof(All));
         }
-        
+
         public IActionResult All([FromQuery] AllCarsQueryModel query)
         {
             var queryResult = this.cars.All(
@@ -161,6 +166,32 @@
                 car.Year,
                 car.CategoryId);
 
+            return RedirectToAction(nameof(All));
+        }
+
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            Car car = data.Cars.Find(id);
+
+            if (car == null)
+            {
+                return NotFound();
+            }
+            return View(car);
+        }
+
+        // POST: /Movies/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Car car = data.Cars.Find(id);
+            data.Cars.Remove(car);
+            data.SaveChanges();
             return RedirectToAction(nameof(All));
         }
     }

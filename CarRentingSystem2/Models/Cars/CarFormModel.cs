@@ -7,6 +7,7 @@
 
     public class CarFormModel
     {
+        public int Id { get; init; }
         [Required]
         [StringLength(BrandMaxLength, MinimumLength = BrandMinLength)]
         public string Brand { get; init; }
