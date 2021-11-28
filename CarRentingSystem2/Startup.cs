@@ -1,6 +1,7 @@
 namespace CarRentingSystem2
 {
     using CarRentingSystem2.Data;
+    using CarRentingSystem2.Data.Models;
     using CarRentingSystem2.Infrastructure;
     using CarRentingSystem2.Services.Cars;
     using CarRentingSystem2.Services.Dealers;
@@ -29,14 +30,16 @@ namespace CarRentingSystem2
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
+            services.AddDefaultIdentity<User>(options =>
             {
                 options.Password.RequireDigit = false;
                 options.Password.RequireLowercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireUppercase = false;
             })
+              .AddRoles<IdentityRole>()
               .AddEntityFrameworkStores<CarRenting2DbContext>();
+            
 
             services.Configure<ApiBehaviorOptions>(option =>
             {
