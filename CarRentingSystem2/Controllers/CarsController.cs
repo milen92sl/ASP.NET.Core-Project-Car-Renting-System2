@@ -1,5 +1,6 @@
 ﻿namespace CarRentingSystem2.Controllers
 {
+    using AutoMapper;
     using CarRentingSystem2.Data;
     using CarRentingSystem2.Data.Models;
     using CarRentingSystem2.Infrastructure;
@@ -14,12 +15,15 @@
         private readonly ICarService cars;
         private readonly IDealerService dealers;
         private readonly CarRenting2DbContext data;
+        private readonly IMapper mapper;
 
-        public CarsController(CarRenting2DbContext data, ICarService cars, IDealerService dealers)
+
+        public CarsController(CarRenting2DbContext data, ICarService cars, IDealerService dealers, IMapper mapper)
         {
             this.data = data;
             this.cars = cars;
             this.dealers = dealers;
+            this.mapper = mapper;
         }
 
         [Authorize]
@@ -115,16 +119,11 @@
                 return Unauthorized();
             }
 
-            return View(new CarFormModel
-            {
-                Brand = car.Brand,
-                Model = car.Model,
-                Description = car.Description,
-                ImageUrl = car.ImageUrl,
-                Year = car.Year,
-                CategoryId = car.CategoryId,
-                Categories = this.cars.AllCategories()
-            });
+            var carForm = this.mapper.Map<CarFormModel>(car);
+
+            carForm.Categories = this.cars.AllCategories();
+
+            return View(carForm);
         }
 
         [HttpPost]

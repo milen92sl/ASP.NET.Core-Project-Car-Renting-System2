@@ -1,5 +1,7 @@
 ﻿namespace CarRentingSystem2.Controllers
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using CarRentingSystem2.Data;
     using CarRentingSystem2.Models.Home;
     using CarRentingSystem2.Services.Statistics;
@@ -9,13 +11,18 @@
     public class HomeController : Controller
     {
         private readonly CarRenting2DbContext data;
+        private readonly IConfigurationProvider mapper;
         private readonly IStatisticsService  statistics;
 
 
-        public HomeController(IStatisticsService statistics,
+        public HomeController(
+            IStatisticsService statistics, 
+            IMapper mapper,
             CarRenting2DbContext data)
         {
+
             this.statistics= statistics;
+            this.mapper = mapper.ConfigurationProvider;
             this.data = data;
         }
 
@@ -25,15 +32,7 @@
             var cars = this.data
                 .Cars
                 .OrderByDescending(c => c.Id)
-                .Select(c => new CarIndexViewModel
-                {
-                    Id = c.Id,
-                    Brand = c.Brand,
-                    Model = c.Model,
-                    Year = c.Year,
-                    ImageUrl = c.ImageUrl,
-                    Description = c.Description
-                })
+                .ProjectTo<CarIndexViewModel>(mapper)
                 .Take(3)
                 .ToList();
 

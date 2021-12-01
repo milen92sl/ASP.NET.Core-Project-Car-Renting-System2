@@ -1,5 +1,7 @@
-﻿namespace CarRentingSystem2.Services.Cars
+﻿namespace CarRentingSystem2.Services.Cars.Models
 {
+    using AutoMapper;
+    using AutoMapper.QueryableExtensions;
     using CarRentingSystem2.Data;
     using CarRentingSystem2.Data.Models;
     using CarRentingSystem2.Models;
@@ -9,10 +11,12 @@
     public class CarService : ICarService
     {
         private readonly CarRenting2DbContext data;
+        private readonly IConfigurationProvider mapper;
 
-        public CarService(CarRenting2DbContext data)
+        public CarService(CarRenting2DbContext data, IMapper mapper)
         {
             this.data = data;
+            this.mapper = mapper.ConfigurationProvider;
         }
 
         public CarQueryServiceModel All(string brand,
@@ -62,19 +66,7 @@
         => this.data
             .Cars
             .Where(c => c.Id == id)
-            .Select(c => new CarDetailsServiceModel
-            {
-                Id = c.Id,
-                Brand = c.Brand,
-                Model = c.Model,
-                Year = c.Year,
-                ImageUrl = c.ImageUrl,
-                CategoryName = c.Category.Name,
-                Description = c.Description,
-                DealerId = c.DealerId,
-                DealerName = c.Dealer.Name,
-                UserId = c.Dealer.UserId
-            })
+            .ProjectTo<CarDetailsServiceModel>(this.mapper)
             .FirstOrDefault();
 
         public int Create(string brand, string model, string description, string imageUrl, int year, int categoryId, int dealerId)

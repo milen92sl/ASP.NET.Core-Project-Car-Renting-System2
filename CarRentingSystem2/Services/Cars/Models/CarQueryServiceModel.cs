@@ -1,4 +1,4 @@
-﻿namespace CarRentingSystem2.Services.Cars
+﻿namespace CarRentingSystem2.Services.Cars.Models
 {
     using System.Collections.Generic;
 

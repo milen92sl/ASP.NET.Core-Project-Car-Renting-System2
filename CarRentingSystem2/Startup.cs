@@ -4,6 +4,7 @@ namespace CarRentingSystem2
     using CarRentingSystem2.Data.Models;
     using CarRentingSystem2.Infrastructure;
     using CarRentingSystem2.Services.Cars;
+    using CarRentingSystem2.Services.Cars.Models;
     using CarRentingSystem2.Services.Dealers;
     using CarRentingSystem2.Services.Statistics;
     using Microsoft.AspNetCore.Builder;
@@ -46,6 +47,8 @@ namespace CarRentingSystem2
                 option.SuppressModelStateInvalidFilter = true;
             });
 
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
@@ -54,7 +57,6 @@ namespace CarRentingSystem2
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<IDealerService, DealerService>();
             services.AddTransient<IStatisticsService, StatisticsService>();
-
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -79,10 +81,7 @@ namespace CarRentingSystem2
                .UseAuthorization()
                .UseEndpoints(endpoints =>
                  {
-                     endpoints.MapControllerRoute(
-                         name: "Areas",
-                         pattern:"/{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
+                     endpoints.MapDefaultAreaRoute();
                      endpoints.MapDefaultControllerRoute();
                      endpoints.MapRazorPages();
                  });
