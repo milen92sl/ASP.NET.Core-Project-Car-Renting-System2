@@ -4,17 +4,15 @@
     ViewBag.Title = "Delete";
 }
 
-<h1>Delete</h1>
-
 <div>
-    <h4>
+    <h2>
         Аre you sure you want to delete the car?
-    </h4>
+    </h2>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <a class="col-sm-2">
             Current Car:
-        </dt>
+        </a>
         <dd class="col-sm-2">
             @Html.DisplayFor(model => model.Brand)
             @Html.DisplayFor(model => model.Model)

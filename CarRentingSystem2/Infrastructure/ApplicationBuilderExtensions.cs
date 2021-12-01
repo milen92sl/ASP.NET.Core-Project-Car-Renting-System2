@@ -9,7 +9,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using static WebConstants;
+    using static CarRentingSystem2.Areas.Admin.AdminConstants;
 
     public static class ApplicationBuilderExtensions
     {

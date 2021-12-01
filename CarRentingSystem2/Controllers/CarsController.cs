@@ -8,8 +8,6 @@
     using CarRentingSystem2.Services.Dealers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class CarsController : Controller
     {
@@ -169,6 +167,7 @@
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
         public ActionResult Delete(int? id)
         {
             if (id == null)
