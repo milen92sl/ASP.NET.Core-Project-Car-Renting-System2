@@ -3,7 +3,6 @@
     using AutoMapper;
     using CarRentingSystem2.Data.Models;
     using CarRentingSystem2.Models.Cars;
-    using CarRentingSystem2.Models.Home;
     using CarRentingSystem2.Services.Cars.Models;
 
 
@@ -12,7 +11,7 @@
 
         public MappingProfile()
         {
-            this.CreateMap<Car, CarIndexViewModel>();
+            this.CreateMap<Car, LatestCarServiceModel>();
             this.CreateMap<CarDetailsServiceModel, CarFormModel>();
 
             this.CreateMap<Car, CarDetailsServiceModel>()

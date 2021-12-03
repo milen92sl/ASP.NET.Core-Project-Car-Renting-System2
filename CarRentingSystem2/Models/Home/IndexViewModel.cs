@@ -1,9 +1,7 @@
 ﻿namespace CarRentingSystem2.Models.Home
 {
-    using System;
+    using CarRentingSystem2.Services.Cars.Models;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
 
     public class IndexViewModel
     {
@@ -13,6 +11,6 @@
 
         public int TotalRents { get; init; }
 
-        public List<CarIndexViewModel> Cars { get; init; }
+        public IList<LatestCarServiceModel> Cars { get; init; }
     }
 }

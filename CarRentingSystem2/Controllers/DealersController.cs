@@ -26,7 +26,7 @@
 
             var userIsAlreadyADealer = this.data
                 .Dealers
-                .Any(d=>d.UserId == this.User.Id());
+                .Any(d => d.UserId == userId);
 
             if (userIsAlreadyADealer)
             {
@@ -48,7 +48,8 @@
             this.data.Dealers.Add(dealerData);
             this.data.SaveChanges();
 
-            return RedirectToAction("All", "Cars");
+
+            return RedirectToAction(nameof(CarsController.All), "Cars");
         }
     }
 }

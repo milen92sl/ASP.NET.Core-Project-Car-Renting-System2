@@ -155,5 +155,14 @@
 
             return true;
         }
+
+        public IEnumerable<LatestCarServiceModel> Latest()
+           => this.data
+                  .Cars
+                  .OrderByDescending(c => c.Id)
+                  .ProjectTo<LatestCarServiceModel>(mapper)
+                  .Take(3)
+                  .ToList();
+        
     }
 }
