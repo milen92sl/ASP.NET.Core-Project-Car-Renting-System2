@@ -48,6 +48,8 @@ namespace CarRentingSystem2
             });
 
             services.AddAutoMapper(typeof(Startup));
+            
+            services.AddMemoryCache();
 
             services.AddControllersWithViews(options =>
             {

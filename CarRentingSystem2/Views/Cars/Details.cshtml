@@ -1,0 +1,22 @@
+﻿@model CarFormModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Model @Model.Brand">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Model @Model.Brand</h5>
+        <p class="card-text">@Model.Description</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">@Model.Model</li>
+        <li class="list-group-item">@Model.Brand</li>
+        <li class="list-group-item">@Model.Year</li>
+    </ul>
+</div>

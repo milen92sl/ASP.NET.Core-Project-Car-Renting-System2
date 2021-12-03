@@ -18,7 +18,11 @@
         private readonly IMapper mapper;
 
 
-        public CarsController(CarRenting2DbContext data, ICarService cars, IDealerService dealers, IMapper mapper)
+        public CarsController(
+            CarRenting2DbContext data,
+            ICarService cars,
+            IDealerService dealers,
+            IMapper mapper)
         {
             this.data = data;
             this.cars = cars;
@@ -182,7 +186,8 @@
             return View(car);
         }
 
-        // POST: /Movies/Delete/5
+        // POST: /Cars/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

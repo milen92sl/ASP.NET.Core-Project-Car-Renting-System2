@@ -1,7 +1,6 @@
-﻿namespace CarRentingSystem2.Models.Home
+﻿namespace CarRentingSystem2.Services.Cars.Models
 {
-
-    public class CarIndexViewModel
+    public class LatestCarServiceModel
     {
         public int Id { get; init; }
 
