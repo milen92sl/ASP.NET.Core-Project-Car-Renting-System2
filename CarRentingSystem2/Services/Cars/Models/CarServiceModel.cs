@@ -15,5 +15,7 @@
         public string CategoryName { get; init; }
 
         public string Description { get; init; }
+
+        public bool IsPublic { get; init; }
     }
 }

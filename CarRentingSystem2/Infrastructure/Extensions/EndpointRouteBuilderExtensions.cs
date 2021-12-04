@@ -1,4 +1,4 @@
-﻿namespace CarRentingSystem2.Infrastructure
+﻿namespace CarRentingSystem2.Infrastructure.Extensions
 {
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Routing;

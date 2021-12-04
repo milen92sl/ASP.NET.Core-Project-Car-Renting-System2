@@ -12,10 +12,7 @@
     {
         private readonly ICarService cars;
 
-        public CarsController(ICarService cars)
-        {
-            this.cars = cars;
-        }
+        public CarsController(ICarService cars) => this.cars = cars;
 
         public IActionResult All()
         {
@@ -24,6 +21,13 @@
                 .Cars;
 
             return View(cars);
+        }
+
+        public IActionResult ChangeVisibility(int id)
+        {
+            this.cars.ChangeVisibility(id);
+
+            return RedirectToAction(nameof(All));
         }
     }
 }

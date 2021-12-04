@@ -10,7 +10,11 @@
     {
 
         public MappingProfile()
-        {
+        {   
+            this.CreateMap<Category, CarCategoryServiceModel>();
+            this.CreateMap<Car, CarServiceModel>()
+                .ForMember(c => c.CategoryName, cfg => cfg.MapFrom(c => c.Category.Name));
+
             this.CreateMap<Car, LatestCarServiceModel>();
             this.CreateMap<CarDetailsServiceModel, CarFormModel>();
 

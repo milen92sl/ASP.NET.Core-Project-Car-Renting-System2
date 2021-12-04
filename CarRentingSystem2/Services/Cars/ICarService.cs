@@ -32,12 +32,14 @@
             string description,
             string imageUrl,
             int year,
-            int categoryId);
+            int categoryId,
+            bool isPublic);
 
         IEnumerable<CarServiceModel> ByUser(string userId);
 
         bool IsByDealer(int carId, int dealerId);
 
+        void ChangeVisibility(int carId);
         IEnumerable<string> AllBrands();
 
         IEnumerable<CarCategoryServiceModel> AllCategories();

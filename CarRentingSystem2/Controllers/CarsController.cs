@@ -3,7 +3,7 @@
     using AutoMapper;
     using CarRentingSystem2.Data;
     using CarRentingSystem2.Data.Models;
-    using CarRentingSystem2.Infrastructure;
+    using CarRentingSystem2.Infrastructure.Extensions;
     using CarRentingSystem2.Models.Cars;
     using CarRentingSystem2.Services.Cars;
     using CarRentingSystem2.Services.Dealers;
@@ -179,9 +179,10 @@
                 car.Description,
                 car.ImageUrl,
                 car.Year,
-                car.CategoryId);
+                car.CategoryId,
+                this.User.IsAdmin());
 
-            TempData[GlobalMessageKey] = "Your car was edited successfully and it is awaiting for approval!";
+            TempData[GlobalMessageKey] = $"Your car was edited successfully {(this.User.IsAdmin() ? string.Empty : "and is awaiting for approval")}!";
 
           return RedirectToAction(nameof(Details), new { id, information = car.GetInformation() });
         }
