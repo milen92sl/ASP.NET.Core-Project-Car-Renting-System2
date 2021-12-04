@@ -1,4 +1,4 @@
-﻿namespace CarRentingSystem2.Test.Controllers
+﻿namespace CarRentingSystem2.Test.Controller
 {
     using Microsoft.AspNetCore.Mvc.Testing;
     using System.Threading.Tasks;

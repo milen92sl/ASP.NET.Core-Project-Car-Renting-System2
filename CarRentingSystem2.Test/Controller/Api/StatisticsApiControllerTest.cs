@@ -1,4 +1,4 @@
-﻿namespace CarRentingSystem2.Test.Controllers.Api
+﻿namespace CarRentingSystem2.Test.Controller.Api
 {
     using CarRentingSystem2.Controllers.Api;
     using CarRentingSystem2.Test.Moq;

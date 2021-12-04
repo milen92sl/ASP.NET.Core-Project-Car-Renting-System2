@@ -99,7 +99,7 @@
 
             TempData[GlobalMessageKey] = "Your car was added successfully and it is awaiting for approval!";
 
-            return RedirectToAction(nameof(Details), new {id = carId, information = car.GetInformation() });
+            return RedirectToAction(nameof(Details), new { id = carId, information = car.GetInformation() });
         }
 
         public IActionResult All([FromQuery] AllCarsQueryModel query)
@@ -125,7 +125,7 @@
         {
             var userId = this.User.Id();
 
-            if (!this.dealers.IsDealer(userId) || !User.IsAdmin())
+            if (!this.dealers.IsDealer(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(DealersController.Become), "Dealers");
             }
@@ -157,7 +157,7 @@
 
             if (!this.cars.CategoryExists(car.CategoryId))
             {
-                this.ModelState.AddModelError(nameof(car.CategoryId), "Category does not exist!");
+                this.ModelState.AddModelError(nameof(car.CategoryId), "Category does not exist.");
             }
 
             if (!ModelState.IsValid)
@@ -172,7 +172,7 @@
                 return BadRequest();
             }
 
-            this.cars.Edit(
+            var edited = this.cars.Edit(
                 id,
                 car.Brand,
                 car.Model,
@@ -182,9 +182,14 @@
                 car.CategoryId,
                 this.User.IsAdmin());
 
-            TempData[GlobalMessageKey] = $"Your car was edited successfully {(this.User.IsAdmin() ? string.Empty : "and is awaiting for approval")}!";
+            if (!edited)
+            {
+                return BadRequest();
+            }
 
-          return RedirectToAction(nameof(Details), new { id, information = car.GetInformation() });
+            TempData[GlobalMessageKey] = $"You car was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";
+
+            return RedirectToAction(nameof(Details), new { id, information = car.GetInformation() });
         }
 
         [Authorize]
@@ -194,6 +199,7 @@
             {
                 return BadRequest();
             }
+
             Car car = data.Cars.Find(id);
 
             if (car == null)

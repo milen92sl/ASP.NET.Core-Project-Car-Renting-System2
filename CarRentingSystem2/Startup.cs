@@ -1,5 +1,6 @@
 namespace CarRentingSystem2
 {
+    using CarRentingSystem2.Controllers;
     using CarRentingSystem2.Data;
     using CarRentingSystem2.Data.Models;
     using CarRentingSystem2.Infrastructure.Extensions;
@@ -88,7 +89,11 @@ namespace CarRentingSystem2
                      endpoints.MapControllerRoute(
                          name: "Car Details",
                          pattern: "/Cars/Details/{id}/{information}",
-                         defaults: new { controler = "Cars", action = "Details" });
+                         defaults: new
+                         {
+                             controler = typeof(CarsController).GetControllerName(),
+                             action = nameof(CarsController.Details)
+                         });
 
                      endpoints.MapDefaultControllerRoute();
                      endpoints.MapRazorPages();
