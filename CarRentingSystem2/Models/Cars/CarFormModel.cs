@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations;
     using static Data.DataConstants.Car;
 
-    public class CarFormModel
+    public class CarFormModel : ICarModel
     {
         public int Id { get; init; }
         [Required]

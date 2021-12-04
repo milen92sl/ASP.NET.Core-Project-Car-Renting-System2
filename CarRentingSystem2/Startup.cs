@@ -40,7 +40,7 @@ namespace CarRentingSystem2
             })
               .AddRoles<IdentityRole>()
               .AddEntityFrameworkStores<CarRenting2DbContext>();
-            
+
 
             services.Configure<ApiBehaviorOptions>(option =>
             {
@@ -48,14 +48,14 @@ namespace CarRentingSystem2
             });
 
             services.AddAutoMapper(typeof(Startup));
-            
+
             services.AddMemoryCache();
 
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
-            
+
             services.AddTransient<ICarService, CarService>();
             services.AddTransient<IDealerService, DealerService>();
             services.AddTransient<IStatisticsService, StatisticsService>();
@@ -84,6 +84,12 @@ namespace CarRentingSystem2
                .UseEndpoints(endpoints =>
                  {
                      endpoints.MapDefaultAreaRoute();
+
+                     endpoints.MapControllerRoute(
+                         name: "Car Details",
+                         pattern: "/Cars/Details/{id}/{information}",
+                         defaults: new { controler = "Cars", action = "Details" });
+
                      endpoints.MapDefaultControllerRoute();
                      endpoints.MapRazorPages();
                  });

@@ -1,6 +1,6 @@
 ﻿namespace CarRentingSystem2.Services.Cars.Models
 {
-    public class CarServiceModel 
+    public class CarServiceModel : ICarModel
     {
         public int Id { get; init; }
 

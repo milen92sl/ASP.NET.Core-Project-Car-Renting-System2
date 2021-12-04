@@ -19,13 +19,16 @@
             this.mapper = mapper.ConfigurationProvider;
         }
 
-        public CarQueryServiceModel All(string brand,
-            string searchTerm,
-            CarSorting sorting,
-            int currentPage,
-            int carsPerPage)
+        public CarQueryServiceModel All(
+                string brand = null,
+                string searchTerm = null,
+                CarSorting sorting = CarSorting.DateCreated,
+                int currentPage = 1,
+                int carsPerPage = int.MaxValue,
+                bool publicOnly = true)
         {
-            var carsQuery = this.data.Cars.AsQueryable();
+            var carsQuery = this.data.Cars
+                .Where(c=>c.IsPublic == publicOnly);
 
             if (!string.IsNullOrWhiteSpace(brand))
             {
@@ -79,7 +82,8 @@
                 ImageUrl = imageUrl,
                 Year = year,
                 CategoryId = categoryId,
-                DealerId = dealerId
+                DealerId = dealerId,
+                IsPublic = false,             
             };
 
             this.data.Cars.Add(carData);
@@ -94,7 +98,7 @@
             .Where(c => c.Dealer.UserId == userId));
 
         public bool IsByDealer(int carId, int dealerId)
-            => this.data
+        => this.data
             .Cars
             .Any(c=>c.Id == carId && c.DealerId == dealerId);
 
@@ -150,6 +154,7 @@
                 carData.ImageUrl = imageUrl;
                 carData.Year = year;
                 carData.CategoryId = categoryId;
+                carData.IsPublic = false;
 
             this.data.SaveChanges();
 
@@ -159,9 +164,10 @@
         public IEnumerable<LatestCarServiceModel> Latest()
            => this.data
                   .Cars
+                  .Where(c=>c.IsPublic)
                   .OrderByDescending(c => c.Id)
                   .ProjectTo<LatestCarServiceModel>(mapper)
-                  .Take(3)
+                  .Take(data.Cars.Count())
                   .ToList();
         
     }

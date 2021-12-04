@@ -11,7 +11,7 @@
         <p class="lead">There are no cars in the system currently available so why you don't add some?</p>
         <hr class="my-4">
         <p class="lead">
-            <a asp-controller="Cars" asp-action="Add" class="btn btn-primary btn-lg" role="button">Save</a>
+            <a asp-controller="Cars" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add Car</a>
         </p>
     </div>
 }
@@ -25,7 +25,7 @@
             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
                 <img class="d-block w-100" src="@car.ImageUrl" alt="@car.Brand @car.Model @car.Year">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" asp-route-information=>@car.Year  @car.Brand @car.Model</a></h5>
+                    <h5><a class="btn btn-primary" asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id" asp-route-information="@car.GetInformation()">@car.Brand @car.Model  @car.Year</a></h5>
                 </div>
             </div>
         }

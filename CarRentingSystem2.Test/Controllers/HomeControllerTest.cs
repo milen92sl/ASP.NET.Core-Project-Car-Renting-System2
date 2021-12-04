@@ -25,52 +25,9 @@ namespace CarRentingSystem2.Test.Controllers
                 .WithData(GetCars()))
             .ShouldReturn()
             .View(view => view
-            .WithModelOfType<IndexViewModel>()
-            .Passing(m => m.Cars.Should().HaveCount(3)));
+            .WithModelOfType <List<LatestCarServiceModel>>()
+            .Passing(m => m.Should().HaveCount(3)));
 
-        [Fact]
-        public void IndexShouldReturnViewWithCorrectModel()
-        {
-            //Arrange
-            var data = DatabaseMock.Instance;
-            var mapper = MapperMock.Instance;
-
-            var cars = Enumerable
-                .Range(0, 10)
-                .Select(i => new Car());
-
-            data.Cars.AddRange(cars);
-            data.Users.Add(new User());
-            data.SaveChanges();
-
-            var carService = new CarService(data, mapper);
-            var statisticsService = new StatisticsService(data);
-
-            var homeController = new HomeController(statisticsService, carService);
-
-            //Act 
-            var result = homeController.Index();
-
-            //Assert          
-            result
-                .Should()
-                .NotBeNull()
-                .And
-                .Should()
-                .BeAssignableTo<ViewResult>()
-                .Which
-                .Model
-                .As<IndexViewModel>()
-                .Invoking(model =>
-                {
-                    model.Cars.Should().HaveCount(3);
-                    model.TotalCars.Should().Be(10);
-                    model.TotalUsers.Should().Be(1);
-
-                })
-                .Invoke();
-
-        }
 
         [Fact]
         public void ErrorShouldReturnView()

@@ -1,4 +1,4 @@
-﻿@model CarFormModel
+﻿@model CarDetailsServiceModel
 
 @{
     ViewBag.Title = "Details";
@@ -8,15 +8,18 @@
     <partial name="_ValidationScriptsPartial" />
 }
 
-<div class="card" style="width: 18rem;">
-    <img class="card-img-top" src="@Model.ImageUrl" alt="@Model.Model @Model.Brand">
+<div class="card" style="width: 65rem; height:auto">
+    <img class="card-img" src="@Model.ImageUrl" alt="@Model.Brand @Model.Model ">
     <div class="card-body">
-        <h5 class="card-title">@Model.Model @Model.Brand</h5>
+        <h5 class="card-title">@Model.Brand @Model.Model</h5>
         <p class="card-text">@Model.Description</p>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item">@Model.Model</li>
-        <li class="list-group-item">@Model.Brand</li>
-        <li class="list-group-item">@Model.Year</li>
+        <li class="list-group-item">Brand: @Model.Brand</li>
+        <li class="list-group-item">Model: @Model.Model</li>
+        <li class="list-group-item">Year: @Model.Year</li>
+        <li class="list-group-item">Category: @Model.CategoryName</li>
+        <li class="list-group-item">Price per day:</li>
+        <li class="list-group-item">Price per hour: </li>
     </ul>
 </div>

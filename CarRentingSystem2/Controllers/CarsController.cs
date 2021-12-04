@@ -9,7 +9,7 @@
     using CarRentingSystem2.Services.Dealers;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-
+    using static WebConstants;
     public class CarsController : Controller
     {
         private readonly ICarService cars;
@@ -30,6 +30,27 @@
             this.mapper = mapper;
         }
 
+
+
+        [Authorize]
+        public IActionResult Mine()
+        {
+            var myCars = this.cars.ByUser(this.User.Id());
+
+            return View(myCars);
+        }
+
+        public IActionResult Details(int id, string information)
+        {
+            var car = this.cars.Details(id);
+
+            if (information != car.GetInformation())
+            {
+                return BadRequest();
+            }
+
+            return View(car);
+        }
         [Authorize]
         public IActionResult Add()
         {
@@ -43,15 +64,6 @@
                 Categories = this.cars.AllCategories()
             });
         }
-
-        [Authorize]
-        public IActionResult Mine()
-        {
-            var myCars = this.cars.ByUser(this.User.Id());
-
-            return View(myCars);
-        }
-
 
         [HttpPost]
         [Authorize]
@@ -76,7 +88,7 @@
                 return View(car);
             }
 
-            this.cars.Create(
+            var carId = this.cars.Create(
                 car.Brand,
                 car.Model,
                 car.Description,
@@ -85,7 +97,9 @@
                 car.CategoryId,
                 dealerId);
 
-            return RedirectToAction(nameof(All));
+            TempData[GlobalMessageKey] = "Your car was added successfully and it is awaiting for approval!";
+
+            return RedirectToAction(nameof(Details), new {id = carId, information = car.GetInformation() });
         }
 
         public IActionResult All([FromQuery] AllCarsQueryModel query)
@@ -167,7 +181,9 @@
                 car.Year,
                 car.CategoryId);
 
-            return RedirectToAction(nameof(All));
+            TempData[GlobalMessageKey] = "Your car was edited successfully and it is awaiting for approval!";
+
+          return RedirectToAction(nameof(Details), new { id, information = car.GetInformation() });
         }
 
         [Authorize]

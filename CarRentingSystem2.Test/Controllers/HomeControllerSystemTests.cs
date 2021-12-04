@@ -22,9 +22,7 @@
             var result =  await client.GetAsync("/");
 
             // Assert
-            Assert.True(result.IsSuccessStatusCode);
-
-            
+            Assert.True(result.IsSuccessStatusCode);            
         }
     }
 }
